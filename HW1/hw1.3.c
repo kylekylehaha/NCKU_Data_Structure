@@ -33,7 +33,8 @@ void reverse(){
 				if(*(*(output+i)+k) != '\n')
 					printf("%c",*(*(output+i)+k));
 			}
-			printf(" ");
+			if(i != 0			/*Be careful whether printf " " behind the last word*/)
+				printf(" ");
 		}
 		printf("\n");
 	}
