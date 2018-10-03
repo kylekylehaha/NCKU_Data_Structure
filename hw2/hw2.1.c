@@ -8,11 +8,80 @@ int count, oddcount, evencount;
 int indexnum = 1;
 char odd[MAX_SIZE];
 char even[MAX_SIZE];
-char *result;
 char buffer[MAX_SIZE];
+char * result;
+
+char *strrev(char *str){
+	int i,j;
+	int length = strlen(str);
+	char temp;
+
+	for(i=0,j=length-1;i<j;i++,j--){
+		temp = str[j];
+		str[j] = str[i];
+		str[i] = temp;
+	}
+	
+	return str;
+}
 
 void bignumadd(){
+	int i, j, lenodd, leneven, maxlen, sum, carry, zero;
+	int oddnumber[MAX_SIZE];
+	int evennumber[MAX_SIZE];
+	int add[MAX_SIZE];
+	char revresult[MAX_SIZE];
+	char *revodd, *reveven;
 
+	/* reverse string for add */
+	revodd = strrev(odd);
+	reveven = strrev(even);
+
+	/* change word to integar */
+	lenodd = strlen(revodd);
+	for(i=0;i<lenodd;i++)
+		oddnumber[i] = revodd[i]-'0';
+	leneven = strlen(reveven);
+	for(i=0;i<leneven;i++)
+		evennumber[i] = reveven[i]-'0';
+
+	/* put zero behind shorter string */
+	if(lenodd > leneven){
+		maxlen = lenodd;
+		for(i = leneven;i<lenodd;i++)
+			evennumber[i] = 0;
+	}
+	else{
+		maxlen = leneven;
+		for(i = lenodd;i<leneven;i++)
+			oddnumber[i] = 0;
+	}
+	
+	/* add oddnumber and evennumber */
+	for(i=0, carry=0;i<maxlen;i++){
+		sum = oddnumber[i] + evennumber[i] + carry;
+		if(sum >=10){
+			add[i] = sum -10;
+			carry = 1;	
+		}
+		else{
+			add[i] = sum;
+			carry = 0;
+		}
+	}	
+	if(carry == 1){
+		add[maxlen] = 1;
+		maxlen = maxlen +1;
+	}
+	
+	/* change integar into char */
+	for(i=0;i<maxlen;i++)	
+		revresult[i] = add[i] + 48;
+
+	/* reverse revresult */
+	result = strrev(revresult);
+
+	return;
 }
 
 int main(){
@@ -29,9 +98,6 @@ int main(){
 		indexnum ++;
 		memset(buffer,0,sizeof(buffer));
 	}
-	
-	/*test*/
-	printf("odd string is: %s\neven string is: %s\n",odd,even);
 	
 	/* big number add */
 	bignumadd();
