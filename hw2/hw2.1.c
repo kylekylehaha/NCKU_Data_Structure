@@ -6,19 +6,21 @@
 
 int count, oddcount, evencount;
 int indexnum = 1;
-int *oddnumber;
-int *evennumber;
-char *odd;
-char *even;
+int oddnumber[MAX_SIZE];
+int evennumber[MAX_SIZE];
+char odd[MAX_SIZE];
+char even[MAX_SIZE];
 char buffer[MAX_SIZE];
 char * result;
 
+/*
 void init(){
 	odd = malloc(sizeof(char)*MAX_SIZE*oddcount);
 	even = malloc(sizeof(char)*MAX_SIZE*evencount);
 	oddnumber = malloc(sizeof(int)*MAX_SIZE*oddcount);
 	evennumber = malloc(sizeof(int)*MAX_SIZE*evencount);
 }
+*/
 char *strrev(char *str){
 	int i,j;
 	int length = strlen(str);
@@ -87,13 +89,6 @@ void bignumadd(){
 		printf("%d",add[i]);
 	printf("\n");
 	
-	/* change integar into char */
-//	for(i=0;i<maxlen;i++)	
-//		revresult[i] = add[i] + 48;
-
-	/* reverse revresult */
-//	result = strrev(revresult);
-
 	return;
 }
 
@@ -103,9 +98,9 @@ int main(){
 	(count % 2 ==1) ? oddcount = count/2 +1 : oddcount /2;
 	evencount = count /2;
 
-	init();
-
 	/* strcat buffer to oddstring or evenstring */
+	memset(odd,0,sizeof(odd));
+	memset(even,0,sizeof(even));
 	memset(buffer,0,sizeof(buffer));
 	while(indexnum <= count){
 		scanf("%s",buffer);
