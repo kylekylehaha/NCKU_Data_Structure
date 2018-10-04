@@ -11,16 +11,7 @@ int evennumber[MAX_SIZE];
 char odd[MAX_SIZE];
 char even[MAX_SIZE];
 char buffer[MAX_SIZE];
-char * result;
 
-/*
-void init(){
-	odd = malloc(sizeof(char)*MAX_SIZE*oddcount);
-	even = malloc(sizeof(char)*MAX_SIZE*evencount);
-	oddnumber = malloc(sizeof(int)*MAX_SIZE*oddcount);
-	evennumber = malloc(sizeof(int)*MAX_SIZE*evencount);
-}
-*/
 char *strrev(char *str){
 	int i,j;
 	int length = strlen(str);
@@ -65,8 +56,7 @@ void bignumadd(){
 			oddnumber[i] = 0;
 	}
 
-	add = malloc(sizeof(int)*MAX_SIZE*maxlen);
-	revresult = malloc(sizeof(char)*MAX_SIZE*maxlen);
+	add = malloc(sizeof(int)*maxlen);
 	
 	/* add oddnumber and evennumber */
 	for(i=0, carry=0;i<maxlen;i++){
