@@ -46,7 +46,6 @@ void change(){
 			if( strcmp(tokensmall,targetsmall) == 0)
 				printf("%s",replace);
 		}
-
 		token = strtok(NULL," ");
 		if(token != NULL)
 			printf(" ");
