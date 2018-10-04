@@ -82,13 +82,17 @@ void bignumadd(){
 		add[maxlen] = 1;
 		maxlen = maxlen +1;
 	}
+
+	for(i=maxlen-1;i>=0;i--)
+		printf("%d",add[i]);
+	printf("\n");
 	
 	/* change integar into char */
-	for(i=0;i<maxlen;i++)	
-		revresult[i] = add[i] + 48;
+//	for(i=0;i<maxlen;i++)	
+//		revresult[i] = add[i] + 48;
 
 	/* reverse revresult */
-	result = strrev(revresult);
+//	result = strrev(revresult);
 
 	return;
 }
@@ -112,8 +116,4 @@ int main(){
 	
 	/* big number add */
 	bignumadd();
-
-	/* print result */
-	printf("%s\n",result);
 }
-
