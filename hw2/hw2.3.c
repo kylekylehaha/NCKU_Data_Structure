@@ -6,8 +6,7 @@ typedef struct {
 	int destination;
 }ROAD;
 
-int nodecount, roadcount, totalvalue, endvalue, failcount, 
-	successcount;
+int nodecount, roadcount, totalvalue, endvalue, failcount, successcount;
 int *nodevalue;
 ROAD *road;
 
