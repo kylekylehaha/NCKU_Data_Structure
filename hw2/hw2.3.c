@@ -91,4 +91,7 @@ int main(){
 
 	/* print result */
 	printf("%d %d %d",failcount, successcount, totalvalue);
+
+	free(nodevalue);
+	free(road);
 }
