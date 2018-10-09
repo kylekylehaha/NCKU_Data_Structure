@@ -8,49 +8,72 @@ char *enter;
 char *targetsmall;
 char buffer[MAX_SIZE];
 char target[MAX_SIZE];
+char oritarget[MAX_SIZE];
 char replace[MAX_SIZE];
 
 void init(){
 	memset(buffer,0,sizeof(buffer));
 	memset(target,0,sizeof(target));
+	memset(oritarget,0,sizeof(oritarget));
 	memset(replace,0,sizeof(replace));
 }
 
-char *captosmall(char *str){
+void captosmall(char *str){
 	int i;
 	int len = strlen((str));
+
+	if (str == NULL)
+		return;
 
 	for(i=0;i<len;i++){
 		if( (str[i]>=65) && (str[i]<=90))
 			str[i] = str[i]+32;
 	}
 
-	return str;
+	return ;
 }
 
 void change(){
-	int i, wordlen, targetlen;
+	int i, wordlen, targetlen, count;
 	char *token;
-	char *tokensmall;
-	char original[MAX_SIZE];
+	char oritoken[MAX_SIZE];
 
+	/* initial */
 	targetlen = strlen(target);
-	memset(original,0,sizeof(original));
+	memset(oritoken,0,sizeof(oritoken));
+	count = 0;
 
 	token = strtok(buffer," ");
 	while(token != NULL){
+		memset(oritoken,0,sizeof(oritoken));
 		wordlen = strlen(token);
+		strcpy(oritoken,token);
+		captosmall(token);
 		if(wordlen != targetlen){
-			printf("%s",token);
+			if (wordlen > targetlen){
+				for (i=0;i<wordlen;i++){
+					if (token[i] == target[i]){
+						count++;
+					}
+				}
+				if (count == targetlen) {
+					printf("%s",replace);
+				}
+				else { 
+					printf("%s",oritoken);
+				}
+				count = 0;
+			}
+			else {
+				printf("%s",oritoken);
+			}
 		}
 		else{
-			strcpy(original,token);
-			tokensmall = captosmall(token);
-			if( strcmp(tokensmall,targetsmall) == 0){
+			if( strcmp(token,target) == 0){
 				printf("%s",replace);
 			}
 			else {
-				printf("%s",original);
+				printf("%s",oritoken);
 			}
 		}
 		token = strtok(NULL," ");
@@ -75,7 +98,8 @@ int main(){
 	*enter = '\0';	
 
 	/* ready for compare whether is captial or small */
-	targetsmall = captosmall(target);
+	strcpy(oritarget,target);
+	captosmall(target);
 
 	/* replace target word and print */
 	change();
