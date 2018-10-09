@@ -32,8 +32,10 @@ void change(){
 	int i, wordlen, targetlen;
 	char *token;
 	char *tokensmall;
+	char original[MAX_SIZE];
 
 	targetlen = strlen(target);
+	memset(original,0,sizeof(original));
 
 	token = strtok(buffer," ");
 	while(token != NULL){
@@ -42,9 +44,14 @@ void change(){
 			printf("%s",token);
 		}
 		else{
+			strcpy(original,token);
 			tokensmall = captosmall(token);
-			if( strcmp(tokensmall,targetsmall) == 0)
+			if( strcmp(tokensmall,targetsmall) == 0){
 				printf("%s",replace);
+			}
+			else {
+				printf("%s",original);
+			}
 		}
 		token = strtok(NULL," ");
 		if(token != NULL)
