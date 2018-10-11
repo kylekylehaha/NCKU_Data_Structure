@@ -34,13 +34,15 @@ void captosmall(char *str){
 }
 
 void change(){
-	int i, wordlen, targetlen, count;
+	int i, j, wordlen, targetlen, count;
 	char *token;
+	char symbol[MAX_SIZE];
 	char oritoken[MAX_SIZE];
 
 	/* initial */
 	targetlen = strlen(target);
 	memset(oritoken,0,sizeof(oritoken));
+	memset(symbol,0,sizeof(symbol));
 	count = 0;
 
 	token = strtok(buffer," ");
@@ -49,32 +51,19 @@ void change(){
 		wordlen = strlen(token);
 		strcpy(oritoken,token);
 		captosmall(token);
-		if(wordlen != targetlen){
-			if (wordlen > targetlen){
-				for (i=0;i<wordlen;i++){
-					if (token[i] == target[i]){
-						count++;
-					}
-				}
-				if (count == targetlen) {
-					printf("%s",replace);
-				}
-				else { 
-					printf("%s",oritoken);
-				}
-				count = 0;
-			}
-			else {
-				printf("%s",oritoken);
+		for (i=0, j=0; i<wordlen;i++){
+			if ((oritoken[i] < 65) || ((90 < oritoken[i]) && ( oritoken[i]< 97)) || (oritoken[i] >122)){
+				symbol[j++] = oritoken[i];
+				token[i] = '\0';
 			}
 		}
-		else{
-			if( strcmp(token,target) == 0){
-				printf("%s",replace);
-			}
-			else {
-				printf("%s",oritoken);
-			}
+		if (strcmp(token,target) == 0){
+			printf("%s",replace);
+			for (i=0;i<j;i++)
+				printf("%c",symbol[i]);
+		}
+		else {
+			printf("%s",oritoken);
 		}
 		token = strtok(NULL," ");
 		if(token != NULL)
