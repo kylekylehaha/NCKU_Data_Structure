@@ -13,7 +13,7 @@ ROAD *road;
 void init(){
 	nodevalue = malloc(sizeof(int)*nodecount);
 	road = malloc(sizeof(ROAD)*roadcount);
-	successcount = 1;
+	successcount = 0;
 	failcount = 0;
 
 	return;
@@ -85,9 +85,14 @@ int main(){
 		scanf("%d",&(road[i].start));
 		scanf("%d",&(road[i].destination));
 	}
-
-	/* travel whole tree */
+	
+	if (totalvalue > nodevalue[0]){
+	successcount ++;
 	travel(road[0].start);
+	}
+	else {
+		failcount ++;
+	}
 
 	/* print result */
 	printf("%d %d %d",failcount, successcount, totalvalue);
