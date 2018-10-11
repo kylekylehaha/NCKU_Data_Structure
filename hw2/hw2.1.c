@@ -56,7 +56,7 @@ void bignumadd(){
 			oddnumber[i] = 0;
 	}
 
-	add = malloc(sizeof(int)*maxlen);
+	add = malloc(sizeof(int)*(maxlen+1));
 	
 	/* add oddnumber and evennumber */
 	for(i=0, carry=0;i<maxlen;i++){
@@ -85,7 +85,10 @@ void bignumadd(){
 int main(){
 	/* count how many odd and even */ 
 	scanf("%d",&count);
-	(count % 2 ==1) ? oddcount = count/2 +1 : oddcount /2;
+	if ((count %2) ==1)
+		oddcount = count /2 +1;
+	else
+		oddcount = count /2;
 	evencount = count /2;
 
 	/* strcat buffer to oddstring or evenstring */
