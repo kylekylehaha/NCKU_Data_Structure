@@ -8,13 +8,11 @@ char *enter;
 char *targetsmall;
 char buffer[MAX_SIZE];
 char target[MAX_SIZE];
-char oritarget[MAX_SIZE];
 char replace[MAX_SIZE];
 
 void init(){
 	memset(buffer,0,sizeof(buffer));
 	memset(target,0,sizeof(target));
-	memset(oritarget,0,sizeof(oritarget));
 	memset(replace,0,sizeof(replace));
 }
 
@@ -34,7 +32,7 @@ void captosmall(char *str){
 }
 
 void change(){
-	int i, j, wordlen, targetlen, count;
+	int i, j, wordlen, targetlen;
 	char *token;
 	char symbol[MAX_SIZE];
 	char oritoken[MAX_SIZE];
@@ -43,7 +41,6 @@ void change(){
 	targetlen = strlen(target);
 	memset(oritoken,0,sizeof(oritoken));
 	memset(symbol,0,sizeof(symbol));
-	count = 0;
 
 	token = strtok(buffer," ");
 	while(token != NULL){
@@ -87,7 +84,6 @@ int main(){
 	*enter = '\0';	
 
 	/* ready for compare whether is captial or small */
-	strcpy(oritarget,target);
 	captosmall(target);
 
 	/* replace target word and print */
