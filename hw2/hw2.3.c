@@ -86,16 +86,19 @@ int main(){
 		scanf("%d",&(road[i].destination));
 	}
 	
-	if (totalvalue > nodevalue[0]){
-	successcount ++;
-	travel(road[0].start);
+	if (totalvalue > endvalue){
+		printf("%d %d %d",failcount,successcount, totalvalue);
+	}
+	else if (totalvalue > nodevalue[0]){
+		totalvalue = totalvalue + nodevalue[0];
+		successcount ++;
+		travel(road[0].start);
+		printf("%d %d %d",failcount, successcount, totalvalue);
 	}
 	else {
 		failcount ++;
+		printf("%d %d %d",failcount, successcount, totalvalue);
 	}
-
-	/* print result */
-	printf("%d %d %d",failcount, successcount, totalvalue);
 
 	free(nodevalue);
 	free(road);
