@@ -15,7 +15,6 @@ void init(){
 	road = malloc(sizeof(ROAD)*roadcount);
 	successcount = 0;
 	failcount = 0;
-
 	return;
 }
 
@@ -47,7 +46,7 @@ void travel(int position){
 	int i;
 	int count = check(position);
 	int startposition = find(position);
-
+	
 	if(totalvalue >endvalue){
 		return;
 	}
@@ -61,9 +60,15 @@ void travel(int position){
 			totalvalue = totalvalue + nodevalue[road[i].destination];
 			successcount ++;
 			travel(road[i].destination);
+			if (totalvalue > endvalue){
+				break;
+			}
 		}
 		else{
 			failcount ++;
+			if (totalvalue > endvalue){
+				break;
+			}
 		}
 	}
 
