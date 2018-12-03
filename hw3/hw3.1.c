@@ -122,6 +122,7 @@ int main(){
 		} 
 	}
 */	
+	txt_total --;
 	freq = malloc(sizeof(int)*index_total);
 	for (i=0;i<index_total;i++)
 		freq[i] = 0;	
