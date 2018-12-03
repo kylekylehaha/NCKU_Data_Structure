@@ -57,7 +57,9 @@ void compare(){
 
 /* find the max freq and print */
 void find_max(){
-	int i, max;
+	int i, j, len, max;
+	char *temp;
+	char *max_key[index_total];
 	
 	max = freq[0];
 	/* find the max freq */
@@ -67,10 +69,23 @@ void find_max(){
 		}
 	}
 	/* check how many key have same max freq*/
-	for (i=0;i<index_total;i++){
-		if (max == freq[i])
-			printf("%s %d\n",key[i],freq[i]);
+	for (i=0,j=0;i<index_total;i++){
+		if (max == freq[i]){
+			max_key[j++] = key[i];
+		}
 	}
+	len = j;	
+	/* printf with dictionary*/
+	for (i=0;i<j;i++)
+		for (j=0;j<len;j++){
+			if (strcmp(max_key[i], max_key[j]) <0){
+				temp = max_key[i];
+				max_key[i] = max_key[j];
+				max_key[j] = temp;
+			}
+		}
+	for (i=0;i<len;i++)
+		printf ("%s %d\n",max_key[i],max);
 
 	return ;
 }
