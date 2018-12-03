@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 1000
-#define INFINITE 9999
+#define MAX_SIZE 10000
+#define INFINITE 99999
 #define TRUE 1
 #define FALSE 0
 
@@ -77,13 +77,11 @@ DEST_FROM_START findNext(int number_in_Q){
 void update(DEST_FROM_START pick, int number_in_Q){
 	int i,min;
 
-//	printf("func. update, pick position %d, dest %d\n",pick.position,pick.dest_from_start);
 	for (i=0;i<number_in_Q;i++){
 		if (Q[i].dest_from_start < pick.dest_from_start + weight[pick.position][Q[i].position])
 			min = Q[i].dest_from_start;
 		else 
 			min = pick.dest_from_start + weight[pick.position][Q[i].position];
-//		printf("position %d, after update, dest is %d\n",Q[i].position,min);
 		Q[i].dest_from_start = min;
 	}
 
@@ -96,8 +94,6 @@ void dijkstra(int start_node , int end_node){
 	int number_in_Q = total_count;
 	DEST_FROM_START pick;
 	
-//	printf("func. dijkstra\n");
-	//initial all Q dest_from_start = INFINITE, except startposition itself
 	S = malloc(sizeof(DEST_FROM_START)*total_count);	
 	Q = malloc(sizeof(DEST_FROM_START)*total_count);	
 	for (i=0;i<total_count;i++){
