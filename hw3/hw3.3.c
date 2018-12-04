@@ -119,13 +119,15 @@ void dijkstra(int start_node , int end_node){
 
 	for (i=0;i<total_count;i++){
 		if (end_node == S[i].position){
-			find = TRUE;
-			printf("%d\n",S[i].dest_from_start);
+			if (S[i].dest_from_start != INFINITE){
+				printf("%d\n",S[i].dest_from_start);
+			}
+			else {
+				printf("404");
+			}
 			break;
 		}
 	}
-	if (!find)
-		printf("404\n");
 
 	return ;
 }
