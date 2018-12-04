@@ -90,6 +90,7 @@ void update(DEST_FROM_START pick, int number_in_Q){
 
 void dijkstra(int start_node , int end_node){
 	int i, final_dest, min;
+	int find = FALSE;
 	int number_in_S = 0;
 	int number_in_Q = total_count;
 	DEST_FROM_START pick;
@@ -118,10 +119,13 @@ void dijkstra(int start_node , int end_node){
 
 	for (i=0;i<total_count;i++){
 		if (end_node == S[i].position){
+			find = TRUE;
 			printf("%d\n",S[i].dest_from_start);
 			break;
 		}
 	}
+	if (!find)
+		printf("404\n");
 
 	return ;
 }
