@@ -154,8 +154,17 @@ void preorder_travel(NodePointer current){
 
 int main(int argc, char *argv[]){
 	int i;
+	char *enter;
+	char buffer[WORD_SIZE];
 
+	memset(buffer,0,sizeof(buffer));
 	root = NULL;
+	while (fgets(buffer,WORD_SIZE,stdin) != NULL){
+		enter = strchr(buffer,'\n');
+		*enter = '\0';
+		process (buffer);
+		memset(buffer,0,sizeof(buffer));
+	}
 	// input with feof
 
 /*	for (i=1;i<argc;i++){
