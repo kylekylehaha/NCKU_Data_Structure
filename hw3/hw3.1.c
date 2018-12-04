@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WORD_SIZE 1000
+#define WORD_SIZE 10000
 #define MAX_SIZE 10000
 
 int index_total;
@@ -14,7 +14,6 @@ char buffer[WORD_SIZE];
 char cmp[]="-----";
 
 void init(){
-	txt_total = 0;
 	memset(buffer,0,sizeof(buffer));
 
 	return ;
@@ -34,14 +33,14 @@ void count (char *str){
 }
 
 void compare(){
-	int i, j, k;
+	int i, k;
 	char *token;
 
 	for (k=0;k<txt_total;k++){
 		token = strtok(txt[k]," ");
 		while (token != NULL){
 			/*find symbol and move it*/
-			for (i=0,j=0;i<strlen(token);i++){
+			for (i=0;i<strlen(token);i++){
 				if ((token[i]<65) || ((90<token[i]) && (token[i]<97)) || (token[i]>122)){
 					token[i] = '\0';
 				}
@@ -52,7 +51,6 @@ void compare(){
 	}
 
 	return ;
-		
 }
 
 /* find the max freq and print */
@@ -76,9 +74,9 @@ void find_max(){
 	}
 	len = j;	
 	/* printf with dictionary*/
-	for (i=0;i<j;i++)
-		for (j=0;j<len;j++){
-			if (strcmp(max_key[i], max_key[j]) <0){
+	for (i=0;i<len-1;i++)
+		for(j=i+1;j<len;j++){
+			if (strcmp (max_key[i],max_key[j]) >0){
 				temp = max_key[i];
 				max_key[i] = max_key[j];
 				max_key[j] = temp;
@@ -91,53 +89,32 @@ void find_max(){
 }
 
 int main(){
-	int j, max;
-	int i=1;
-	int length = 0;
+	int i, j;
+	char *enter;
 
 	init();
 
 	index_total = 0;
-	while (!feof(stdin)){
-		fgets(buffer,WORD_SIZE,stdin);
-		//move '\n'
-		length = strlen(buffer);
-		buffer[length-1] = '\0';
-		length --;
-		if (strcmp (buffer,cmp) == 0){
-			while (!feof(stdin)){
-				memset(buffer,0,sizeof(buffer));
-				fgets(buffer,WORD_SIZE,stdin);
-				//move '\n'
-				length = strlen(buffer);
-				buffer[length-1] = '\0';
-				length --;
+	txt_total = 0;
+
+	while (fgets(buffer,WORD_SIZE,stdin) !=NULL){
+		enter = strchr(buffer,'\n');
+		*enter = '\0';
+		if (strcmp(buffer,cmp) == 0){
+			memset(buffer,0,sizeof(buffer));
+			while (fgets(buffer,WORD_SIZE,stdin) !=NULL){
+				enter = strchr(buffer,'\n');
+				*enter = '\0';
 				strcpy(txt[txt_total++],buffer);
 				memset(buffer,0,sizeof(buffer));
 			}
+			break;
 		}
 		else {
 			strcpy(key[index_total++],buffer);
+			memset(buffer,0,sizeof(buffer));
 		}
-		memset(buffer,0,sizeof(buffer));
 	}
-/*	while(i<argc){
-		if (strcmp(argv[i],cmp) == 0){
-			for(j=i+1;j<argc;j++){			//i+1 for skip "-----"
-				length = strlen(argv[j]);
-				strcpy(temp,argv[j]);
-				temp[length] = ' ';			//there are extra blankspace behind the last word
-				strcat(txt,temp);
-				memset(temp,0,sizeof(temp));			
-			}
-			break;
-		}
-		else{
-			strcpy(key[index_total++],argv[i++]);
-		} 
-	}
-*/	
-	txt_total --;
 	freq = malloc(sizeof(int)*index_total);
 	for (i=0;i<index_total;i++)
 		freq[i] = 0;	
@@ -146,6 +123,5 @@ int main(){
 
 	find_max();
 
-	free(freq);
 	return 0;
 }

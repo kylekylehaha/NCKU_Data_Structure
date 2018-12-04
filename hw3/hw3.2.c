@@ -156,10 +156,12 @@ int main(int argc, char *argv[]){
 	int i;
 
 	root = NULL;
-	for (i=1;i<argc;i++){
+	// input with feof
+
+/*	for (i=1;i<argc;i++){
 		process(argv[i]);
 	}	
-
+*/
 	preorder_travel(root);
 
 	return 0;	
