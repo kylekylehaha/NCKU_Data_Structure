@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 #define MAX_SIZE 10000
-#define INFINITE 99999
+#define INFINITE 999999999
 #define TRUE 1
 #define FALSE 0
 
@@ -69,7 +69,7 @@ DEST_FROM_START findNext(int number_in_Q){
 	for (i=0;i<number_in_Q;i++){
 		if (pick.dest_from_start > Q[i].dest_from_start)
 			pick = Q[i];
-		}
+	}
 
 	return pick;
 }
@@ -109,26 +109,42 @@ void dijkstra(int start_node , int end_node){
 
 	//dijkstra algorithm
 	while (number_in_Q >0){
-
 		//find the smallest dest_from_start in Q
+//		for (i=0;i<number_in_Q;i++){
+//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
+//		}
 		pick = findNext(number_in_Q);
+//		printf ("pick's position is %d ; pick's freq is %d\n",pick.position,pick.dest_from_start);
 		pop(&number_in_Q,pick);
+//		printf ("after pop\n");
+//		for (i=0;i<number_in_Q;i++){
+//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
+//		}
 		update(pick,number_in_Q);
+//		printf("after update\n");
+//		for (i=0;i<number_in_Q;i++){
+//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
+//		}
 		push(pick,&number_in_S);
+//		printf ("after push, the elemet in S is \n");
+//		for (i=0;i<number_in_S;i++)
+//			printf ("position %d ; freq %d\n",S[i].position,S[i].dest_from_start);
 	}	
 
 	for (i=0;i<total_count;i++){
 		if (end_node == S[i].position){
 			if (S[i].dest_from_start != INFINITE){
+				find = TRUE;
 				printf("%d\n",S[i].dest_from_start);
 			}
 			else {
-				printf("404");
+				find = FALSE;
 			}
 			break;
 		}
 	}
-
+	if (!find)
+		printf ("404");
 	return ;
 }
 
@@ -151,14 +167,18 @@ int main(){
 				break;
 			}
 		}
-		if (check_start) total_node[total_count++] = start;
+		if (check_start) {
+			total_node[total_count++] = start;
+		}
 		for (j=0;j<total_count;j++){
 			if (end == total_node[j]){
 				check_end = FALSE;
 				break;
 			}
 		}
-		if (check_end) total_node[total_count++] = end;
+		if (check_end) {
+			total_node[total_count++] = end;
+		}
 		
 	}
 	scanf("%d%d",&start_node, &end_node);
