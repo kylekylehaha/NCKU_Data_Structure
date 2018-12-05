@@ -2,16 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WORD_SIZE 10000
-#define MAX_SIZE 10000
+#define WORD_SIZE 1000000
+#define MAX_SIZE 1000000
 #define TRUE 1
 #define FALSE 0
 
 int index_total;
 int txt_total;
 int *freq;
-char key[WORD_SIZE][WORD_SIZE];
-char txt[MAX_SIZE][MAX_SIZE];
+char *key[MAX_SIZE];
+//char key[WORD_SIZE][WORD_SIZE];
+char *txt[MAX_SIZE];
 char buffer[WORD_SIZE];
 char cmp[]="-----";
 
@@ -91,7 +92,7 @@ void find_max(){
 //	for (i=0;i<index_total;i++)
 //		printf ("key %s ; freq %d",key[i],freq[i]);
 	/* check how many key have same max freq*/
-	for (i=0;i<index_total;i++){
+	for (i=0, len = 0;i<index_total;i++){
 		if (max == freq[i]){
 			max_key[len++] = key[i];
 		}
@@ -99,7 +100,7 @@ void find_max(){
 	/* printf with dictionary*/
 //	printf ("before order(), len is %d\n",len);
 //	for (i=0;i<len;i++)
-//		printf("max_key[%d] : %s",i,max_key[i]);
+//		printf("max_key[%d] : %s\n",i,max_key[i]);
 	for (i=0;i<len-1;i++)
 		for(j=i+1;j<len;j++){
 			if (strcmp (max_key[i],max_key[j]) >0){
@@ -110,7 +111,7 @@ void find_max(){
 		}
 //	printf("after order()\n");
 //	for (i=0;i<len;i++)
-//		printf("max_key[%d] : %s",i,max_key[i]);
+//		printf("max_key[%d] : %s\n",i,max_key[i]);
 	for (i=0;i<len;i++)
 		printf ("%s %d\n",max_key[i],max);
 
@@ -118,7 +119,7 @@ void find_max(){
 }
 
 int main(){
-	int i, j;
+	int i, j, len;
 	int repeat = 0;
 	char *enter;
 
@@ -135,6 +136,8 @@ int main(){
 			while (fgets(buffer,WORD_SIZE,stdin) !=NULL){
 				enter = strchr(buffer,'\n');
 				*enter = '\0';
+				len = strlen(buffer);
+				txt[txt_total] = malloc (sizeof(char)*len);
 				strcpy(txt[txt_total++],buffer);
 				memset(buffer,0,sizeof(buffer));
 			}
@@ -144,8 +147,12 @@ int main(){
 			for (i=0;i<index_total;i++)
 				if (strcmp(buffer,key[i]) ==0)
 					repeat = 1;
-			if (!repeat)
+			if (!repeat){
+				len = strlen(buffer);
+				key[index_total]= malloc(sizeof(char)*len);
 				strcpy(key[index_total++],buffer);
+			}
+				//strcpy(key[index_total++],buffer);
 			memset(buffer,0,sizeof(buffer));
 			repeat = 0;
 		}
@@ -157,6 +164,7 @@ int main(){
 //	printf ("print txt\n");
 //	for (i=0;i<txt_total;i++)
 //		printf("%s\n",txt[i]);
+
 	freq = malloc(sizeof(int)*index_total);
 	for (i=0;i<index_total;i++)
 		freq[i] = 0;	

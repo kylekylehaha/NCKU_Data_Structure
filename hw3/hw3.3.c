@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 10000
-#define INFINITE 999999999
+#define MAX_SIZE 100
+#define INFINITE 99999
 #define TRUE 1
 #define FALSE 0
 
@@ -131,11 +131,11 @@ void dijkstra(int start_node , int end_node){
 //			printf ("position %d ; freq %d\n",S[i].position,S[i].dest_from_start);
 	}	
 
-	for (i=0;i<total_count;i++){
+	for (i=0;i<number_in_S;i++){
 		if (end_node == S[i].position){
 			if (S[i].dest_from_start != INFINITE){
 				find = TRUE;
-				printf("%d\n",S[i].dest_from_start);
+				printf("%d",S[i].dest_from_start);
 			}
 			else {
 				find = FALSE;
@@ -152,7 +152,6 @@ int main(){
 	int i, j, check_start, check_end,  start, dest, end, len, start_node, end_node;
 
 	init();
-
 	scanf("%d",&road_count);
 	for (i=0;i<road_count;i++){
 		scanf("%d%d%d",&start,&dest,&end);
