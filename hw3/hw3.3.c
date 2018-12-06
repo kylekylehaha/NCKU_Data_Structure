@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 100
+#define MAX_SIZE 10000
 #define INFINITE 99999
 #define TRUE 1
 #define FALSE 0
@@ -11,21 +11,29 @@ typedef struct{
 	int position;
 }DEST_FROM_START;
 
+typedef struct{
+	int node1;
+	int node2;
+	int dest;
+}WEIGHT;
+
+int index_weight = 0; // index for weight[]
 int total_count= 0;
 int road_count;
-int weight[MAX_SIZE][MAX_SIZE];
+//int weight[MAX_SIZE][MAX_SIZE];
 int total_node[MAX_SIZE];
 DEST_FROM_START *S;
 DEST_FROM_START *Q;
+WEIGHT weight[MAX_SIZE];
 
 void init(){
 	int i, j;
 
-	for (i=0;i<MAX_SIZE;i++)
-		for (j=0;j<MAX_SIZE;j++){
-			weight[i][j] = INFINITE;
-			if (i == j) weight[i][j] = 0;
-		}
+//	for (i=0;i<MAX_SIZE;i++)
+//		for (j=0;j<MAX_SIZE;j++){
+//			weight[i][j] = INFINITE;
+//			if (i == j) weight[i][j] = 0;
+//		}
 
 	return ;
 }
@@ -74,14 +82,37 @@ DEST_FROM_START findNext(int number_in_Q){
 	return pick;
 }
 
+int find_dest (int start, int end){
+	int i, dest_between = INFINITE;
+
+	for (i=0;i<index_weight;i++){
+		if ((start == weight[i].node1) && (end == weight[i].node2)){
+			dest_between = weight[i].dest;
+			return dest_between;
+		}	
+	}
+	for (i=0;i<index_weight;i++){
+		if ((end == weight[i].node1) && (start == weight[i].node2)){
+			dest_between = weight[i].dest;
+			return dest_between;
+		}
+	}
+
+	return dest_between;
+
+}
+
 void update(DEST_FROM_START pick, int number_in_Q){
-	int i,min;
+	int i,min,dest_between;
 
 	for (i=0;i<number_in_Q;i++){
-		if (Q[i].dest_from_start < pick.dest_from_start + weight[pick.position][Q[i].position])
+		dest_between = find_dest(pick.position,Q[i].position);
+		if (Q[i].dest_from_start < pick.dest_from_start + dest_between)
+//		if (Q[i].dest_from_start < pick.dest_from_start + weight[pick.position][Q[i].position])
 			min = Q[i].dest_from_start;
 		else 
-			min = pick.dest_from_start + weight[pick.position][Q[i].position];
+			min = pick.dest_from_start + dest_between;
+//			min = pick.dest_from_start + weight[pick.position][Q[i].position];
 		Q[i].dest_from_start = min;
 	}
 
@@ -144,39 +175,43 @@ void dijkstra(int start_node , int end_node){
 		}
 	}
 	if (!find)
-		printf ("404");
+		printf ("404\n");
 	return ;
 }
 
 int main(){
-	int i, j, check_start, check_end,  start, dest, end, len, start_node, end_node;
+	int i, j, check_node1, check_node2,  node1, dest, node2, len, start_node, end_node ;
 
 	init();
+	index_weight = 0;
 	scanf("%d",&road_count);
 	for (i=0;i<road_count;i++){
-		scanf("%d%d%d",&start,&dest,&end);
-		weight[start][end] = dest;
-		weight[end][start] = dest;
+		scanf("%d%d%d",&node1,&dest,&node2);
+		weight[index_weight].node1= node1;
+		weight[index_weight].node2 = node2;
+		weight[index_weight++].dest = dest;		
+//		weight[start][end] = dest;
+//		weight[end][start] = dest;
 		//check whether start有沒有被算過
-		check_start = TRUE;
-		check_end = TRUE;
+		check_node1 = TRUE;
+		check_node2 = TRUE;
 		for (j=0;j<total_count;j++){
-			if (start == total_node[j]){
-				check_start = FALSE;
+			if (node1 == total_node[j]){
+				check_node1 = FALSE;
 				break;
 			}
 		}
-		if (check_start) {
-			total_node[total_count++] = start;
+		if (check_node1) {
+			total_node[total_count++] = node1;
 		}
 		for (j=0;j<total_count;j++){
-			if (end == total_node[j]){
-				check_end = FALSE;
+			if (node2 == total_node[j]){
+				check_node2 = FALSE;
 				break;
 			}
 		}
-		if (check_end) {
-			total_node[total_count++] = end;
+		if (check_node2) {
+			total_node[total_count++] = node2;
 		}
 		
 	}

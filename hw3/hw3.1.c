@@ -98,9 +98,9 @@ void find_max(){
 		}
 	}	
 	/* printf with dictionary*/
-//	printf ("before order(), len is %d\n",len);
-//	for (i=0;i<len;i++)
-//		printf("max_key[%d] : %s\n",i,max_key[i]);
+	printf ("before order(), len is %d\n",len);
+	for (i=0;i<len;i++)
+		printf("max_key[%d] : %s\n",i,max_key[i]);
 	for (i=0;i<len-1;i++)
 		for(j=i+1;j<len;j++){
 			if (strcmp (max_key[i],max_key[j]) >0){
@@ -109,9 +109,9 @@ void find_max(){
 				max_key[j] = temp;
 			}
 		}
-//	printf("after order()\n");
-//	for (i=0;i<len;i++)
-//		printf("max_key[%d] : %s\n",i,max_key[i]);
+	printf("after order()\n");
+	for (i=0;i<len;i++)
+		printf("max_key[%d] : %s\n",i,max_key[i]);
 	for (i=0;i<len;i++)
 		printf ("%s %d\n",max_key[i],max);
 
@@ -137,7 +137,7 @@ int main(){
 				enter = strchr(buffer,'\n');
 				*enter = '\0';
 				len = strlen(buffer);
-				txt[txt_total] = malloc (sizeof(char)*len);
+				txt[txt_total] = malloc (sizeof(char)*len+1);
 				strcpy(txt[txt_total++],buffer);
 				memset(buffer,0,sizeof(buffer));
 			}
@@ -157,13 +157,13 @@ int main(){
 			repeat = 0;
 		}
 	}
-//	printf ("index_total %d ; txt_total %d\n",index_total,txt_total);
-//	printf ("print key\n");
-//	for (i=0;i<index_total;i++)
-//		printf("%s\n",key[i]);
-//	printf ("print txt\n");
-//	for (i=0;i<txt_total;i++)
-//		printf("%s\n",txt[i]);
+	printf ("index_total %d ; txt_total %d\n",index_total,txt_total);
+	printf ("print key\n");
+	for (i=0;i<index_total;i++)
+		printf("%s\n",key[i]);
+	printf ("print txt\n");
+	for (i=0;i<txt_total;i++)
+		printf("%s\n",txt[i]);
 
 	freq = malloc(sizeof(int)*index_total);
 	for (i=0;i<index_total;i++)
