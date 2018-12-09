@@ -3,8 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#define WORD_SIZE 10000
-#define MAX_SIZE 10000
+#define WORD_SIZE 1000
+#define MAX_SIZE 1000
 #define TRUE 1
 #define FALSE 0
 
@@ -12,72 +12,49 @@ int index_total;
 int txt_total;
 int *freq;
 char *key[MAX_SIZE];
-char *txt[MAX_SIZE];
+char txt[MAX_SIZE];
 char buffer[WORD_SIZE];
 char cmp[]="-----";
 
 void init(){
 	memset(buffer,0,sizeof(buffer));
+	memset(txt,0,sizeof(MAX_SIZE));
 
 	return ;
 }
 
-/* check whether token is in key array, and count the frequency*/
-void count (char *str){
-	int i = 0;
-	for (i=0;i<index_total;i++){
-		if (strcmp(str,key[i]) == 0){
-			freq[i]++;
-			break;
+int check(char boundary){
+	if(boundary>='0' && boundary<='9')//number
+		return FALSE;
+	else if(boundary>='A' && boundary<='Z')//capital
+		return FALSE;
+	else if(boundary>='a' && boundary<='z')//lower
+		return FALSE;
+	else
+		return TRUE;	
+}
+
+int search(char *str, char *target, int time){
+	int len = strlen(target);
+	char *next = strstr(str,target);
+	while (next != NULL){
+		if (check(*(next-1)) && check(*(next+len))){
+			time++;
 		}
-	}
-	
-	return ;
-}
-
-int check_symbol(char c){
-	if ((c >=97) && (c<=122))	return FALSE;
-	else if ((c>=65) && (c<=90))	return FALSE;
-	else if ((c>=48) && (c<=57))	return FALSE;
-	else return TRUE;
+		next = strstr((next+len),target);
+		if (next == NULL) break;
+	}	
+	return time;
 }
 
 void compare(){
-	int i, j, k, check, len_token,len_key,len_count;
-	char *token, *start;
-	
-	for (i=0;i<txt_total;i++){
-		token = strtok(txt[i], " ");
-		while (token != NULL){
-			len_token = strlen(token);
-			//compare all keyword
-			for (j=0;j<index_total;j++){
-				len_key = strlen(key[j]);
-				start = strstr(token,key[j]);
-				if (start){
-					if (len_token == len_key) check = TRUE;
-					else if (check_symbol(*(start-1)) && check_symbol(*(start+len_key))) check = TRUE;
-					else check = FALSE;
-					if (check){
-						count(key[j]);
-						check = FALSE;
-						break;
-					}
-				}
-			}
-			token = strtok(NULL, " ");
-		}
+	int i;
+	for (i=0;i<index_total;i++){
+		freq[i] = search(txt,key[i],freq[i]);
 	}
+	
 	return ;
 }
-
-int strCompare(char *str1, char *str2) { 
-	while (*str1 && *str1 == *str2) {		
-		++str1, 
-		++str2; 
-	}
-	return *str1 >= *str2; 
-} 
 
 /* find the max freq and print */
 void find_max(){
@@ -102,7 +79,7 @@ void find_max(){
 	/* printf with dictionary*/
 	for (i=0;i<len-1;i++)
 		for(j=i+1;j<len;j++){
-			if (strCompare (max_key[i],max_key[j]) >0){
+			if (strcmp (max_key[i],max_key[j]) >0){
 				temp = max_key[i];
 				max_key[i] = max_key[j];
 				max_key[j] = temp;
@@ -119,7 +96,7 @@ int main(){
 	int i, j, len;
 	int repeat = 0;
 	char *enter;
-
+	char c;
 	init();
 
 	index_total = 0;
@@ -129,13 +106,10 @@ int main(){
 		*enter = '\0';
 		if (strcmp(buffer,cmp) == 0){
 			memset(buffer,0,sizeof(buffer));
-			while (fgets(buffer,WORD_SIZE,stdin) !=NULL){
-				enter = strchr(buffer,'\n');
-				*enter = '\0';
-				len = strlen(buffer);
-				txt[txt_total] = malloc (sizeof(char)*len+1);
-				strcpy(txt[txt_total++],buffer);
-				memset(buffer,0,sizeof(buffer));
+			c = getchar();
+			while (c!=EOF){
+				txt[txt_total++] = c;
+				c = getchar();
 			}
 			break;
 		}
