@@ -20,7 +20,6 @@ typedef struct{
 int index_weight = 0; // index for weight[]
 int total_count= 0;
 int road_count;
-//int weight[MAX_SIZE][MAX_SIZE];
 int total_node[MAX_SIZE];
 DEST_FROM_START *S;
 DEST_FROM_START *Q;
@@ -28,12 +27,6 @@ WEIGHT weight[MAX_SIZE];
 
 void init(){
 	int i, j;
-
-//	for (i=0;i<MAX_SIZE;i++)
-//		for (j=0;j<MAX_SIZE;j++){
-//			weight[i][j] = INFINITE;
-//			if (i == j) weight[i][j] = 0;
-//		}
 
 	return ;
 }
@@ -108,11 +101,9 @@ void update(DEST_FROM_START pick, int number_in_Q){
 	for (i=0;i<number_in_Q;i++){
 		dest_between = find_dest(pick.position,Q[i].position);
 		if (Q[i].dest_from_start < pick.dest_from_start + dest_between)
-//		if (Q[i].dest_from_start < pick.dest_from_start + weight[pick.position][Q[i].position])
 			min = Q[i].dest_from_start;
 		else 
 			min = pick.dest_from_start + dest_between;
-//			min = pick.dest_from_start + weight[pick.position][Q[i].position];
 		Q[i].dest_from_start = min;
 	}
 
@@ -138,28 +129,14 @@ void dijkstra(int start_node , int end_node){
 		}
 	}
 
+	
 	//dijkstra algorithm
 	while (number_in_Q >0){
 		//find the smallest dest_from_start in Q
-//		for (i=0;i<number_in_Q;i++){
-//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
-//		}
 		pick = findNext(number_in_Q);
-//		printf ("pick's position is %d ; pick's freq is %d\n",pick.position,pick.dest_from_start);
 		pop(&number_in_Q,pick);
-//		printf ("after pop\n");
-//		for (i=0;i<number_in_Q;i++){
-//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
-//		}
 		update(pick,number_in_Q);
-//		printf("after update\n");
-//		for (i=0;i<number_in_Q;i++){
-//			printf ("position %d, freq is %d\n",Q[i].position,Q[i].dest_from_start);
-//		}
 		push(pick,&number_in_S);
-//		printf ("after push, the elemet in S is \n");
-//		for (i=0;i<number_in_S;i++)
-//			printf ("position %d ; freq %d\n",S[i].position,S[i].dest_from_start);
 	}	
 
 	for (i=0;i<number_in_S;i++){
@@ -176,6 +153,7 @@ void dijkstra(int start_node , int end_node){
 	}
 	if (!find)
 		printf ("404\n");
+
 	return ;
 }
 
@@ -187,11 +165,13 @@ int main(){
 	scanf("%d",&road_count);
 	for (i=0;i<road_count;i++){
 		scanf("%d%d%d",&node1,&dest,&node2);
+		if (dest <=0){
+			printf ("404\n");
+			exit(1);
+		}
 		weight[index_weight].node1= node1;
 		weight[index_weight].node2 = node2;
 		weight[index_weight++].dest = dest;		
-//		weight[start][end] = dest;
-//		weight[end][start] = dest;
 		//check whether start有沒有被算過
 		check_node1 = TRUE;
 		check_node2 = TRUE;
