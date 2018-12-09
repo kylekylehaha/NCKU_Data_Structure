@@ -64,25 +64,6 @@ void compare(){
 						break;
 					}
 				}
-			//	for (k=0, len_count=0,symbol_useless = 0;k<len_token;k++){
-			//		if (ispunct(token[k])){			//check whether token[k] is symbol or not
-			//			symbol_useless ++;
-			//		}
-			//		if (token[k] == key[j][len_count]){
-			//			//check whether there is symbol in keyword
-			//			if (ispunct(token[k]))			//subtract is keyword have symbol too
-			//				symbol_useless--;
-			//			len_count ++;
-			//		}
-			//		
-			//	}
-			//	//check whether token is same with keyword
-			//	if ((len_count == len_key) && ((len_count == len_token) || (len_count == (len_token - symbol_useless)))){
-			//		count(key[j]);
-			//		break;
-			//	}
-				
-
 			}
 			token = strtok(NULL, " ");
 		}
