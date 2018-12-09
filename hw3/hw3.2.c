@@ -68,11 +68,11 @@ void insert(char *string){
 }
 
 /*find the min of delete node of subtree*/
-NodePointer Successor(NodePointer delete){
-	NodePointer temp = delete->right;
+NodePointer Predecessor(NodePointer delete){
+	NodePointer temp = delete->left;
 
-	while (temp->left){
-		temp = temp ->left;
+	while (temp->right){
+		temp = temp ->right;
 	}
 
 	return temp;
@@ -96,7 +96,7 @@ void delete (char *string){
 		if (delete_node ->left ==NULL || delete_node ->right ==NULL) //先把y找到，使case1變成case 2跟case3的處理方式
 			y = delete_node;
 		else 
-			y = Successor(delete_node);
+			y = Predecessor(delete_node);
 		
 		if (y ->left !=NULL) 		//找到y的child 即便沒有child ,x 會是NULL
 			x = y->left;
