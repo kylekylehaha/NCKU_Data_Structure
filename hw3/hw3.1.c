@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-#define WORD_SIZE 1000000
-#define MAX_SIZE 1000000
+#define WORD_SIZE 10000
+#define MAX_SIZE 10000
 #define TRUE 1
 #define FALSE 0
 
@@ -11,7 +12,6 @@ int index_total;
 int txt_total;
 int *freq;
 char *key[MAX_SIZE];
-//char key[WORD_SIZE][WORD_SIZE];
 char *txt[MAX_SIZE];
 char buffer[WORD_SIZE];
 char cmp[]="-----";
@@ -25,7 +25,6 @@ void init(){
 /* check whether token is in key array, and count the frequency*/
 void count (char *str){
 	int i = 0;
-//	printf ("enter func count\n");	
 	for (i=0;i<index_total;i++){
 		if (strcmp(str,key[i]) == 0){
 			freq[i]++;
@@ -36,50 +35,76 @@ void count (char *str){
 	return ;
 }
 
+int check_symbol(char c){
+	if ((c >=97) && (c<=122))	return FALSE;
+	else if ((c>=65) && (c<=90))	return FALSE;
+	else if ((c>=48) && (c<=57))	return FALSE;
+	else return TRUE;
+}
+
 void compare(){
-	int i, k, check_symbol = FALSE;
-	char *token;
+	int i, j, k, check, len_token,len_key,len_count;
+	char *token, *start;
 	
-//	printf("enter func compare\n");
-	for (k=0;k<txt_total;k++){
-//		printf("now the txt is %s\n",txt[k]);
-		token = strtok(txt[k]," ");
+	for (i=0;i<txt_total;i++){
+		token = strtok(txt[i], " ");
 		while (token != NULL){
-			/*find symbol and move it*/
-//			printf("before find symbol, token is %s\n",token);
-			for (i=0;i<index_total;i++){
-				if (strcmp (token,key[i]) == 0){
-					check_symbol = TRUE;
-					break;
-				}
-			}
-			if (!check_symbol){
-				for (i=0;i<strlen(token);i++){
-					if ((token[i]<65) || ((90<token[i]) && (token[i]<97)) || (token[i]>122)){		
-						token[i] = '\0';
+			len_token = strlen(token);
+			//compare all keyword
+			for (j=0;j<index_total;j++){
+				len_key = strlen(key[j]);
+				start = strstr(token,key[j]);
+				if (start){
+					if (len_token == len_key) check = TRUE;
+					else if (check_symbol(*(start-1)) && check_symbol(*(start+len_key))) check = TRUE;
+					else check = FALSE;
+					if (check){
+						count(key[j]);
+						check = FALSE;
+						break;
 					}
 				}
+			//	for (k=0, len_count=0,symbol_useless = 0;k<len_token;k++){
+			//		if (ispunct(token[k])){			//check whether token[k] is symbol or not
+			//			symbol_useless ++;
+			//		}
+			//		if (token[k] == key[j][len_count]){
+			//			//check whether there is symbol in keyword
+			//			if (ispunct(token[k]))			//subtract is keyword have symbol too
+			//				symbol_useless--;
+			//			len_count ++;
+			//		}
+			//		
+			//	}
+			//	//check whether token is same with keyword
+			//	if ((len_count == len_key) && ((len_count == len_token) || (len_count == (len_token - symbol_useless)))){
+			//		count(key[j]);
+			//		break;
+			//	}
+				
+
 			}
-//			printf ("after find symbol, token is %s\n",token);
-			count(token);
-//			printf ("after compare(), all freq now is \n");
-//			for (i=0;i<index_total;i++)
-//				printf ("key is %s; freq is  %d",key[i],freq[i]);
-			check_symbol = FALSE;
-			token = strtok(NULL," ");
+			token = strtok(NULL, " ");
 		}
 	}
-
 	return ;
 }
 
+int strCompare(char *str1, char *str2) { 
+	while (*str1 && *str1 == *str2) {		
+		++str1, 
+		++str2; 
+	}
+	return *str1 >= *str2; 
+} 
+
 /* find the max freq and print */
 void find_max(){
-	int i, j, len, max;
+	int i, j, len, max,index_num = 0;
 	char *temp;
-	char *max_key[WORD_SIZE];
+	char *max_key[index_total];
+	char *number[index_total];
 	
-//	printf ("enter find_max()\n");
 	max = freq[0];
 	/* find the max freq */
 	for (i=0;i<index_total;i++){
@@ -87,10 +112,6 @@ void find_max(){
 			max = freq[i];
 		}
 	}
-//	printf ("the max freq is %d\n",max);
-//	printf ("check whether max is max\n");
-//	for (i=0;i<index_total;i++)
-//		printf ("key %s ; freq %d",key[i],freq[i]);
 	/* check how many key have same max freq*/
 	for (i=0, len = 0;i<index_total;i++){
 		if (max == freq[i]){
@@ -98,20 +119,15 @@ void find_max(){
 		}
 	}	
 	/* printf with dictionary*/
-	printf ("before order(), len is %d\n",len);
-	for (i=0;i<len;i++)
-		printf("max_key[%d] : %s\n",i,max_key[i]);
 	for (i=0;i<len-1;i++)
 		for(j=i+1;j<len;j++){
-			if (strcmp (max_key[i],max_key[j]) >0){
+			if (strCompare (max_key[i],max_key[j]) >0){
 				temp = max_key[i];
 				max_key[i] = max_key[j];
 				max_key[j] = temp;
 			}
 		}
-	printf("after order()\n");
-	for (i=0;i<len;i++)
-		printf("max_key[%d] : %s\n",i,max_key[i]);
+
 	for (i=0;i<len;i++)
 		printf ("%s %d\n",max_key[i],max);
 
@@ -127,7 +143,6 @@ int main(){
 
 	index_total = 0;
 	txt_total = 0;
-
 	while (fgets(buffer,WORD_SIZE,stdin) !=NULL){
 		enter = strchr(buffer,'\n');
 		*enter = '\0';
@@ -157,14 +172,6 @@ int main(){
 			repeat = 0;
 		}
 	}
-	printf ("index_total %d ; txt_total %d\n",index_total,txt_total);
-	printf ("print key\n");
-	for (i=0;i<index_total;i++)
-		printf("%s\n",key[i]);
-	printf ("print txt\n");
-	for (i=0;i<txt_total;i++)
-		printf("%s\n",txt[i]);
-
 	freq = malloc(sizeof(int)*index_total);
 	for (i=0;i<index_total;i++)
 		freq[i] = 0;	
