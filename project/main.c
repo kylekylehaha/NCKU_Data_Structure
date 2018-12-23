@@ -7,10 +7,48 @@
 #define MAX_LENGTH 78763 
 clock_t start,finish;
 
-// check temp_A[5] -> temp_A[10]
+typedef struct node *NodePointer;
+typedef struct node{
+	char *key;
+	NodePointer left;
+	NodePointer right;
+}node;
+
+NodePointer root = NULL;
+void create(NodePointer *ptr, char *string){
+	NodePointer temp;
+	temp = malloc(sizeof(*temp));
+	temp -> left = NULL;
+	temp -> right = NULL;
+	temp -> key = string;
+	*ptr = temp;
+	return ;
+}
+
+void insert (char *data){
+	NodePointer insert_pos, check, ptr;
+	check = root;
+	insert_pos = NULL;
+	create (&ptr,data);
+	if (!root){
+		root = ptr;
+		return ;
+	}
+	while (check != NULL){
+		insert_pos = check;
+		if (strcmp (data,check -> key) >0)	check = check ->right;
+		else if (strcmp (data,check->key)<0)	check = check ->left;
+	}
+	if (strcmp(data,insert_pos -> key) >0)	insert_pos ->right = ptr;
+	else insert_pos -> left = ptr;
+	return ;
+}
+// change temp_A[5] -> temp_A[20]
+// change temp_B[5] -> temp_B[10]
+// because overflow
 char *check(char data[MAX_LENGTH], char answer[MAX_LENGTH]) {
     static char clue[12];
-    char temp_A[10],temp_B[5];
+    char temp_A[20],temp_B[10];
     int i;
     int A = 0;
     int ans_appear_times[10] = {0, 0, 0, 0, 0, 
@@ -88,7 +126,6 @@ char *guess(char *clue){
 			clue_count[index++] = clue[i];
 		}
 	}
-//	printf ("clue_A is %d ; clue_B is %d\n",clue_A,clue_B);
 	if (!start_check){
 		//prepare compare data
 		//strcpy(data,data_standary)
@@ -150,15 +187,8 @@ int main(int argc, char *argv[]) {
     for(i=0; i<MAX_LENGTH; i++) {
         ans[i] = rand()%10+'0';
     }
-	ans[0] = '0';
-	for (i=0;i<MAX_LENGTH;i++)
-		printf ("%c",ans[i]);
-	printf ("\n");
-    //time start
-
-	//test
 	init();
-
+    //time start
     gettimeofday(&tval_before, NULL);
     while(1){
         //get_back is mean that the result of your guess
