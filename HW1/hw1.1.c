@@ -42,6 +42,8 @@ int main(){
 	}
 
 	check();
+
+	printf("test for vscode git ");
 	
 	return 0; 
 }
